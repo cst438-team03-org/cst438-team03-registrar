@@ -15,4 +15,7 @@ public interface EnrollmentRepository extends CrudRepository<Enrollment, Integer
 
     @Query("select e from Enrollment e where e.section.sectionNo=:sectionNo and e.student.id=:studentId")
     Enrollment findEnrollmentBySectionNoAndStudentId(int sectionNo, int studentId);
+
+    @Query("select e from Enrollment e where e.student.id=:studentId and e.enrollmentId=:enrollmentId")
+    Enrollment findEnrollmentByStudentIdAndEnrollmentId(int studentId, int enrollmentId);
 }
