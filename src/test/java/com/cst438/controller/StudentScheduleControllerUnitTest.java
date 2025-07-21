@@ -2,7 +2,6 @@ package com.cst438.controller;
 
 import com.cst438.domain.Enrollment;
 import com.cst438.domain.EnrollmentRepository;
-import com.cst438.domain.SectionRepository;
 import com.cst438.dto.EnrollmentDTO;
 import com.cst438.dto.LoginDTO;
 import com.cst438.service.GradebookServiceProxy;
@@ -14,10 +13,12 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
-import java.util.Random;
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class StudentScheduleControllerUnitTest {
@@ -64,6 +65,9 @@ public class StudentScheduleControllerUnitTest {
         Enrollment enrollment = enrollmentRepository.findEnrollmentByStudentIdAndEnrollmentId(studentId, enrollmentId);
         assertNotNull(enrollment);
 
+        //  Verify that the "addEnrollment" message was sent to the gradebook service
+        verify(gradebookServiceProxy, times(1)).sendMessage(eq("addEnrollment"), any());
+
         //  Delete Sam's enrollment
         webTestClient.delete().uri("/enrollments/{enrollmentId}", enrollmentId)
                 .headers(headers -> headers.setBearerAuth(jwt))
@@ -73,5 +77,8 @@ public class StudentScheduleControllerUnitTest {
         //  Confirm Sam's enrollment was deleted
         Enrollment enrollmentDeleteCheck = enrollmentRepository.findEnrollmentByStudentIdAndEnrollmentId(studentId, enrollmentId);
         assertNull(enrollmentDeleteCheck);
+
+        //  Verify that the "deleteEnrollment" message was sent to the gradebook service
+        verify(gradebookServiceProxy, times(1)).sendMessage(eq("deleteEnrollment"), any());
     }
 }

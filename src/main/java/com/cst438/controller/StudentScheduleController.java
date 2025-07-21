@@ -2,24 +2,13 @@ package com.cst438.controller;
 
 import com.cst438.domain.*;
 import com.cst438.dto.EnrollmentDTO;
-import com.cst438.dto.SectionDTO;
 import com.cst438.service.GradebookServiceProxy;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @RestController
 public class StudentScheduleController {
@@ -76,7 +65,7 @@ public class StudentScheduleController {
         enrollment.setSection(section);
 		//  Enrollment and other fields.
 		enrollmentRepository.save(enrollment);
-        return new EnrollmentDTO(
+        EnrollmentDTO enrollmentDTO = new EnrollmentDTO(
                 enrollment.getEnrollmentId(),
                 enrollment.getGrade(),
                 student.getId(),
@@ -93,6 +82,8 @@ public class StudentScheduleController {
                 section.getTerm().getYear(),
                 section.getTerm().getSemester()
         );
+        gradebook.sendMessage("addEnrollment", enrollmentDTO);
+        return enrollmentDTO;
     }
 
     // student drops a course
@@ -120,5 +111,6 @@ public class StudentScheduleController {
             );
         }
         enrollmentRepository.delete(enrollment);
+        gradebook.sendMessage("deleteEnrollment", enrollment.getEnrollmentId());
     }
 }
