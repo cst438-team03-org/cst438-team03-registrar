@@ -39,7 +39,37 @@ public class StudentController {
 		// of the logged in student.
 		// Return a list of EnrollmentDTO.
 
-      return null;
+        // Find logged in student by email
+        User student = userRepository.findByEmail(principal.getName());
+        if (student == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+
+        // Get enrollments for student in the given year and semester
+        List<Enrollment> enrollments = enrollmentRepository.findByYearAndSemesterOrderByCourseId(year, semester, student.getId());
+
+        // Convert each enrollment to DTO format for reponse
+        List<EnrollmentDTO> enrollmentDTOs = new ArrayList<>();
+        for (Enrollment e : enrollments) {
+            enrollmentDTOs.add(new EnrollmentDTO(
+                e.getEnrollmentId(),
+                e.getGrade(),
+                e.getStudent().getId(),
+                e.getStudent().getName(),
+                e.getStudent().getEmail(),
+                e.getSection().getCourse().getCourseId(),
+                e.getSection().getCourse().getTitle(),
+                e.getSection().getSectionId(),
+                e.getSection().getSectionNo(),
+                e.getSection().getBuilding(),
+                e.getSection().getRoom(),
+                e.getSection().getTimes(),
+                e.getSection().getCourse().getCredits(),
+                e.getSection().getTerm().getYear(),
+                e.getSection().getTerm().getSemester()
+            ));
+        }
+        return enrollmentDTOs;
    }
 
    // return transcript for student
@@ -51,7 +81,38 @@ public class StudentController {
 		// method to retrive the enrollments given the id 
 		// of the logged in student.
 		// Return a list of EnrollmentDTO.
-		
-        return null;
+
+        // Find logged in student by email
+        User student = userRepository.findByEmail(principal.getName());
+        if (student == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+
+        // Get enrollments for student given the id
+        int studentId = student.getId();
+        List<Enrollment> enrollments = enrollmentRepository.findEnrollmentsByStudentIdOrderByTermId(studentId);
+
+        // Convert each enrollment to DTO format for reponse
+        List<EnrollmentDTO> enrollmentDTOs = new ArrayList<>();
+        for (Enrollment e : enrollments) {
+            enrollmentDTOs.add(new EnrollmentDTO(
+                    e.getEnrollmentId(),
+                    e.getGrade(),
+                    e.getStudent().getId(),
+                    e.getStudent().getName(),
+                    e.getStudent().getEmail(),
+                    e.getSection().getCourse().getCourseId(),
+                    e.getSection().getCourse().getTitle(),
+                    e.getSection().getSectionId(),
+                    e.getSection().getSectionNo(),
+                    e.getSection().getBuilding(),
+                    e.getSection().getRoom(),
+                    e.getSection().getTimes(),
+                    e.getSection().getCourse().getCredits(),
+                    e.getSection().getTerm().getYear(),
+                    e.getSection().getTerm().getSemester()
+            ));	
+        }
+        return enrollmentDTOs;
     }
 }
