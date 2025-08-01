@@ -23,6 +23,8 @@ insert into section (section_no, course_id, section_id, term_id, building, room,
 (1, 'cst489', 1, 10, '90', 'B104', 'W F 10-11', 'ted@csumb.edu'),
 (2, 'cst599', 2, 10, '90', 'B104', 'M T 12-1', 'ted@csumb.edu');
 
-insert into enrollment (enrollment_id, grade, section_no, user_id)
-values (100, 'B', 1, 2);
-
+insert into enrollment (enrollment_id, grade, section_no, user_id) values
+(100, 'B', 1, 2),
+(101, 'C', 2, 4),
+(101, 'B', 2, 5),
+(101, 'A', 2, 6);
