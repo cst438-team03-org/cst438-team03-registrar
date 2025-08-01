@@ -26,5 +26,5 @@ insert into section (section_no, course_id, section_id, term_id, building, room,
 insert into enrollment (enrollment_id, grade, section_no, user_id) values
 (100, 'B', 1, 2),
 (101, 'C', 2, 4),
-(101, 'B', 2, 5),
-(101, 'A', 2, 6);
+(102, 'B', 2, 5),
+(103, 'A', 2, 6);
