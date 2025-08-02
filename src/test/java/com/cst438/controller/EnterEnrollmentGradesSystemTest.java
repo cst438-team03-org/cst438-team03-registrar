@@ -3,13 +3,11 @@ package com.cst438.controller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -20,7 +18,6 @@ import java.util.Map;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class EnterEnrollmentGradesSystemTest {
 
     static final String CHROME_DRIVER_FILE_LOCATION = "D:\\CSUMB\\CST438\\labs\\lab4\\chromedriver-win64\\chromedriver.exe";
@@ -145,7 +142,7 @@ public class EnterEnrollmentGradesSystemTest {
         driver.findElement(By.id("email")).sendKeys("samb@csumb.edu");
         driver.findElement(By.id("password")).sendKeys("samb2025");
         driver.findElement(By.id("loginButton")).click();
-//        Thread.sleep(DELAY);
+        Thread.sleep(DELAY);
 
         //VERIFY GRADE IS B+ FOR CST599
         driver.findElement(By.id("transcriptLink")).click();
@@ -153,7 +150,7 @@ public class EnterEnrollmentGradesSystemTest {
         WebElement gradeTd = row.findElement(By.xpath("td[7]"));
         String grade = gradeTd.getText().trim();
         assertEquals("B+",grade);
-//        Thread.sleep(DELAY);
+        Thread.sleep(DELAY);
     }
 
 }
