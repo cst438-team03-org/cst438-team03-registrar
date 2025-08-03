@@ -53,7 +53,7 @@ public class StudentViewsAssignmentsAndGradesSystemTest {
         String assignmentTitle = "Test Assignment " + new Random().nextInt(1000);
         String dueDate = "12012025";
 
-        // === LOGIN AS INSTRUCTOR ===
+        // LOGIN AS INSTRUCTOR
         driver.findElement(By.id("email")).sendKeys("ted@csumb.edu");
         driver.findElement(By.id("password")).sendKeys("ted2025");
         driver.findElement(By.id("loginButton")).click();
@@ -68,9 +68,16 @@ public class StudentViewsAssignmentsAndGradesSystemTest {
 
         // ADD ASSIGNMENT
         driver.findElement(By.xpath("//button[contains(text(),'Add Assignment')]")).click();
-        driver.findElement(By.xpath("//input[@placeholder='Assignment title']")).sendKeys(assignmentTitle);
-        driver.findElement(By.xpath("//input[@type='date']")).sendKeys(dueDate);
-        driver.findElement(By.xpath("//dialog//button[contains(text(),'Save')]")).click();
+        // WAIT UNTIL DIALOG IS OPEN
+        WebElement dialog = new WebDriverWait(driver, Duration.ofSeconds(5)).until(d -> d.findElement(By.cssSelector("dialog[open]")));
+        // FIND ELEMENTS IN OPEN DIALOG
+        WebElement titleInput = dialog.findElement(By.cssSelector("input[placeholder='Assignment title']"));
+        WebElement dateInput  = dialog.findElement(By.cssSelector("input[type='date']"));
+        WebElement saveBtn    = dialog.findElement(By.xpath(".//button[text()='Save']"));
+        // SAVE ASSIGNMENT
+        titleInput.sendKeys(assignmentTitle);
+        dateInput.sendKeys(dueDate);
+        saveBtn.click();
 
         // VERIFY IT WAS ADDED
         Thread.sleep(DELAY);
