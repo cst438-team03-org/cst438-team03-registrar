@@ -16,11 +16,15 @@ insert into course values
 ('cst334', 'Operating Systems', 4),
 ('cst363', 'Introduction to Database', 4),
 ('cst489', 'Software Engineering', 4),
-('cst499', 'Capstone', 4);
+('cst499', 'Capstone', 4),
+('cst599', 'Advanced Programming', 4);
 
 insert into section (section_no, course_id, section_id, term_id, building, room, times, instructor_email) values
-(1, 'cst489', 1, 10, '90', 'B104', 'W F 10-11', 'ted@csumb.edu');
+(1, 'cst489', 1, 10, '90', 'B104', 'W F 10-11', 'ted@csumb.edu'),
+(2, 'cst599', 2, 10, '90', 'B104', 'M T 12-1', 'ted@csumb.edu');
 
-insert into enrollment (enrollment_id, grade, section_no, user_id)
-values (100, 'B', 1, 2);
-
+insert into enrollment (enrollment_id, grade, section_no, user_id) values
+(100, 'B', 1, 2),
+(101, 'C', 2, 4),
+(102, 'B', 2, 5),
+(103, 'A', 2, 6);
