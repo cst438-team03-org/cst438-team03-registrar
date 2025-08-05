@@ -13,8 +13,9 @@ import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StudentEnrollsInSectionSystemTest {
     static final String CHROME_DRIVER_FILE_LOCATION = "/Users/JamesMondragon/Documents/School/chromedriver-mac-arm64/chromedriver";
@@ -110,8 +111,10 @@ public class StudentEnrollsInSectionSystemTest {
         instructorPageCst599Row.findElement(By.id("enrollmentsLink")).click();
         Thread.sleep(DELAY);
 
-        //  Find sama in enrollment list
-        WebElement studentSamaRow = driver.findElement(By.xpath("//tr[./td[text()='sama']]"));
-        assertNotNull(studentSamaRow);
+        //  Find any/all occurrences of sama on the website
+        List<WebElement> studentSamaRow = driver.findElements(By.xpath("//tr[./td[text()='sama']]"));
+
+        //  Expect only one Sama to be found
+        assertEquals(1, studentSamaRow.size(), "Expected only one 'sama' enrollment");
     }
 }
